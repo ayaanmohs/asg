@@ -1,7 +1,7 @@
 # ──────────────────────────────────────────────────────────────────────
-# BTRFS RAID Manager — Configuration
+# ASG (Aldertech Storage Governor) — Configuration
 # ──────────────────────────────────────────────────────────────────────
-# Copy this file to /etc/btrfs-raid-manager/config.yaml and edit it.
+# Copy this file to /etc/asg/config.yaml and edit it.
 # All settings have sensible defaults for a 4-core system (e.g. Pi 5).
 # ──────────────────────────────────────────────────────────────────────
 
@@ -76,5 +76,5 @@ notifications:
 
 # ── State Files ─────────────────────────────────────────────────────
 # Where to store persistent state (error deduplication, capacity
-# history). Defaults to the package directory if not set.
-# state_dir: "/var/lib/btrfs-raid-manager"
+# history). Defaults to /var/lib/asg if not set.
+# state_dir: "/var/lib/asg"
