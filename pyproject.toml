@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "aldertech-asg"
-version = "1.0.1"
+version = "1.0.2"
 description = "ASG (Aldertech Storage Governor): Health monitoring, capacity planning, and intelligent scrub scheduling for BTRFS RAID pools with mismatched drives"
 readme = "README.md"
 license = {text = "MIT"}
