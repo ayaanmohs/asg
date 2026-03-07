@@ -5,7 +5,7 @@ Thanks for your interest in contributing to BTRFS RAID Manager. This document gi
 ## Before you start
 
 - Read the [README](README.md) to understand what this tool does and how it works.
-- Check existing [issues](https://github.com/jaldertech/btrfs-raid-manager/issues) and [pull requests](https://github.com/jaldertech/btrfs-raid-manager/pulls) to avoid duplicates.
+- Check existing [issues](https://github.com/jaldertech/asg/issues) and [pull requests](https://github.com/jaldertech/asg/pulls) to avoid duplicates.
 
 ## Opening an issue
 
@@ -19,7 +19,7 @@ Thanks for your interest in contributing to BTRFS RAID Manager. This document gi
 2. **Make your changes** in that branch. Keep the scope focused.
 3. **Match existing style:** Python 3.9+, type hints where it helps, same logging and error-handling style as the rest of the codebase. No new runtime dependencies without discussion — this project deliberately uses only the Python standard library.
 4. **Update docs** if you change behaviour or config: README, `config.yaml` comments, and/or docstrings.
-5. **Test:** Run the test suite with `python3 -m unittest discover -s btrfs_raid_manager/tests -v`. Use `--dry-run` where relevant on a real pool.
+5. **Test:** Run the test suite with `python3 -m unittest discover -s asg/tests -v`. Use `--dry-run` where relevant on a real pool.
 6. **Open a PR** against `main` with a clear title and description of what changed and why. Reference any related issues.
 
 ## What we're looking for

@@ -1,4 +1,4 @@
-"""Allow running as: python3 -m btrfs_raid_manager <command>"""
+"""Allow running as: python3 -m asg <command>"""
 from .cli import main
 
 main()

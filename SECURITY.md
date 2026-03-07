@@ -17,7 +17,7 @@ If you believe you've found a security vulnerability in BTRFS RAID Manager, plea
 
 **Do not open a public issue** for security-sensitive bugs.
 
-1. **Report privately:** Go to the [Security](https://github.com/jaldertech/btrfs-raid-manager/security) tab of this repository and click **Report a vulnerability** (or use **Advisories → New draft**). That creates a private security advisory visible only to maintainers and you.
+1. **Report privately:** Go to the [Security](https://github.com/jaldertech/asg/security) tab of this repository and click **Report a vulnerability** (or use **Advisories → New draft**). That creates a private security advisory visible only to maintainers and you.
 
 2. **What to include:** Describe the issue, steps to reproduce, and impact. If you have a suggested fix, you can mention it.
 

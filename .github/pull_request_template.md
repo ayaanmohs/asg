@@ -13,8 +13,8 @@ Fixes # (issue)
 
 ## How has this been tested?
 
-- [ ] Dry-run verification: `btrfs-raid-manager <command> --dry-run`
-- [ ] Unit tests: `python3 -m unittest discover -s btrfs_raid_manager/tests -v`
+- [ ] Dry-run verification: `asg <command> --dry-run`
+- [ ] Unit tests: `python3 -m unittest discover -s asg/tests -v`
 - [ ] Manual testing (describe below)
 
 **Test environment:**

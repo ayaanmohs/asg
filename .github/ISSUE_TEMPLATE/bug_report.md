@@ -14,7 +14,7 @@ A clear and concise description of what the bug is.
 
 Steps to reproduce the behaviour:
 
-1. Run `btrfs-raid-manager ...`
+1. Run `asg ...`
 2. With pool layout: ...
 3. See error
 
@@ -24,7 +24,7 @@ A clear and concise description of what you expected to happen.
 
 ## Logs
 
-Paste any relevant output from `btrfs-raid-manager` or your cron log.
+Paste any relevant output from `asg` or your cron log.
 
 ```
 <paste logs here>
