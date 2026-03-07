@@ -13,7 +13,7 @@ We recommend running the latest release.
 
 ## Reporting a Vulnerability
 
-If you believe you've found a security vulnerability in BTRFS RAID Manager, please report it responsibly.
+If you believe you've found a security vulnerability in ASG, please report it responsibly.
 
 **Do not open a public issue** for security-sensitive bugs.
 
@@ -27,6 +27,6 @@ If you believe you've found a security vulnerability in BTRFS RAID Manager, plea
    - If we accept the report, we will work on a fix and coordinate disclosure (e.g. release + advisory). We are happy to credit you in the advisory unless you prefer to stay anonymous.
    - If we decline (e.g. out of scope or not a vulnerability), we will explain why.
 
-4. **Scope:** BTRFS RAID Manager runs filesystem commands via `sudo`. Reports about privilege escalation, command injection, or unsafe path handling are in scope. General hardening ideas are welcome as discussions or issues.
+4. **Scope:** ASG runs filesystem commands via `sudo`. Reports about privilege escalation, command injection, or unsafe path handling are in scope. General hardening ideas are welcome as discussions or issues.
 
-Thank you for helping keep BTRFS RAID Manager and its users safe.
+Thank you for helping keep ASG and its users safe.

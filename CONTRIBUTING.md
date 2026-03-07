@@ -1,6 +1,6 @@
-# Contributing to BTRFS RAID Manager
+# Contributing to ASG
 
-Thanks for your interest in contributing to BTRFS RAID Manager. This document gives a short guide to opening issues and submitting changes.
+Thanks for your interest in contributing to ASG. This document gives a short guide to opening issues and submitting changes.
 
 ## Before you start
 
