@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "asg"
+version = "1.0.0"
+description = "ASG (Aldertech Storage Governor): Health monitoring, capacity planning, and intelligent scrub scheduling for BTRFS RAID pools with mismatched drives"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.9"
+authors = [{name = "Aldertech"}]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: System :: Filesystems",
+    "Topic :: System :: Monitoring",
+    "Topic :: System :: Systems Administration",
+]
+
+[project.urls]
+Homepage = "https://github.com/jaldertech/asg"
+Repository = "https://github.com/jaldertech/asg"
+Issues = "https://github.com/jaldertech/asg/issues"
+
+[project.scripts]
+asg = "asg.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["asg*"]
+

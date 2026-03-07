@@ -1,0 +1,80 @@
+# ──────────────────────────────────────────────────────────────────────
+# BTRFS RAID Manager — Configuration
+# ──────────────────────────────────────────────────────────────────────
+# Copy this file to /etc/btrfs-raid-manager/config.yaml and edit it.
+# All settings have sensible defaults for a 4-core system (e.g. Pi 5).
+# ──────────────────────────────────────────────────────────────────────
+
+# ── Pool ─────────────────────────────────────────────────────────────
+# Mount point of the BTRFS filesystem to manage.
+# The UUID is auto-detected from this mount point at startup and
+# verified before every operation. You can optionally pin a UUID
+# below to prevent accidental operation on a different pool.
+pool:
+  mount: "/mnt/media_pool"
+  # uuid: ""                  # Optional. If set, must match the mounted UUID.
+
+# ── Scrub Throttling ────────────────────────────────────────────────
+# The scrub controller monitors system load and per-device I/O
+# utilisation. If either exceeds the threshold, the scrub is paused
+# until the system is idle again.
+scrub:
+  # 1-minute load average threshold. Pause scrub above this value.
+  # Set relative to your CPU core count (e.g. 3.0 for a 4-core Pi 5).
+  load_threshold: 3.0
+
+  # Per-device I/O utilisation percentage. Pause if any pool drive
+  # exceeds this. Calculated from /proc/diskstats over a 2-second
+  # sample window.
+  io_threshold_percent: 40.0
+
+  # How often (seconds) to re-check system load during a scrub.
+  poll_interval_seconds: 30
+
+  # Let the scrub run uninterrupted for this many seconds before
+  # the first throttle check. Prevents thrashing on transient spikes.
+  grace_period_seconds: 60
+
+# ── Capacity Warnings ──────────────────────────────────────────────
+capacity:
+  # Warn when allocated data chunks exceed this percentage fullness.
+  chunk_fullness_warn_percent: 90.0
+
+  # Warn when real free space drops below this percentage of the
+  # usable RAID1 ceiling.
+  free_space_warn_percent: 10.0
+
+  # Warn when metadata chunks exist on fewer than this many devices.
+  # For a 4-drive RAID1 pool, 3 is recommended. For 2-drive pools,
+  # set this to 2.
+  metadata_min_device_count: 3
+
+# ── Snapshots ───────────────────────────────────────────────────────
+snapshots:
+  # Directory for pre-backup read-only snapshots.
+  # Created under the pool mount point.
+  directory: ".snapshots"
+
+  # Delete snapshots older than this many days.
+  retention_days: 3
+
+# ── Notifications (optional) ───────────────────────────────────────
+# All notification backends are optional. Remove or comment out any
+# you don't use. If no backends are configured, the manager logs to
+# stdout only (captured by cron or journalctl).
+notifications:
+  # discord:
+  #   webhook_url: "https://discord.com/api/webhooks/..."
+
+  # ntfy:
+  #   url: "https://ntfy.sh/your-topic"
+  #   token: ""                # Optional authentication token
+
+  # gotify:
+  #   url: "https://gotify.example.com"
+  #   token: "your-app-token"
+
+# ── State Files ─────────────────────────────────────────────────────
+# Where to store persistent state (error deduplication, capacity
+# history). Defaults to the package directory if not set.
+# state_dir: "/var/lib/btrfs-raid-manager"
