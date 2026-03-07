@@ -1,0 +1,13 @@
+[Unit]
+Description=ASG (Aldertech Storage Governor) - Integrity Check
+After=network.target
+
+[Service]
+Type=oneshot
+User=root
+ExecStart=/usr/local/bin/asg check
+# Exit codes: 0 = healthy, 1 = errors detected
+SuccessExitStatus=0 1
+
+[Install]
+WantedBy=multi-user.target
