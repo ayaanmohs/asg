@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://raw.githubusercontent.com/jaldertech/asg/main/assets/logo.png" alt="Aldertech Logo" width="200"/>
+</p>
+
 # ASG (Aldertech Storage Governor)
 
 > **"Why does `df -h` say I have 2.6TB free but BTRFS thinks it's 3.5TB?"**
