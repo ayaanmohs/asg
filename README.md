@@ -268,6 +268,10 @@ The tool:
 
 ---
 
+## Related Projects
+
+- **[ADRG](https://github.com/jaldertech/adrg)** — Aldertech Dynamic Resource Governor: Automatic CPU/RAM management for high-density Docker stacks.
+
 ## Licence
 
 MIT — see [LICENCE](LICENCE) file.
