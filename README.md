@@ -68,7 +68,7 @@ ASG provides five integrated governance modules:
 ### Option 1: Install via pip
 
 ```bash
-pip3 install asg
+pip3 install aldertech-asg
 ```
 
 ### Option 2: Install via Git Clone
